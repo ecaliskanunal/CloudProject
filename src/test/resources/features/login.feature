@@ -1,4 +1,4 @@
-@CLOUD-1191
+@smoke @CLOUD-1191
 Feature: Login functionality
   User Story: As a user, I should be able to login so that I can land on the dashboard page.
 

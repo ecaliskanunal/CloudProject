@@ -65,7 +65,7 @@ public class LogoutStepDefinitions {
 
     @Then("user should not be able to see his username in username box")
     public void user_should_not_be_able_to_see_his_username_in_username_box() {
-
+        Assert.assertTrue(loginPage.usernameInputBox.getText().isEmpty());
     }
 
 }
