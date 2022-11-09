@@ -22,7 +22,7 @@ public class LogoutStepDefinitions {
 
     @Given("user is on dashboard")
     public void user_is_on_dashboard() {
-        Driver.getDriver().get(ConfigurationReader.getProperty("URL"));
+        Driver.getDriver().get(ConfigurationReader.getProperty("url"));
         loginPage.usernameInputBox.sendKeys(ConfigurationReader.getProperty("username"));
         loginPage.passwordInputBox.sendKeys(ConfigurationReader.getProperty("password"));
         loginPage.loginButton.click();
