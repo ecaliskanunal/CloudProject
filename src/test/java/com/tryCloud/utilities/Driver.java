@@ -1,7 +1,6 @@
 package com.tryCloud.utilities;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -56,8 +55,8 @@ public class Driver {
                     WebDriverManager.chromedriver().setup();
                     driverPool.set(new ChromeDriver());
                     //driverPool.set( new ChromeDriver(new ChromeOptions().setHeadless(true)));
-                    driverPool.get().manage().window().setSize(new Dimension(1400, 1000));
-                    //driverPool.get().manage().window().maximize();
+                    //driverPool.get().manage().window().setSize(new Dimension(1400, 1000));
+                    driverPool.get().manage().window().maximize();
                     driverPool.get().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
                     break;
 
