@@ -1,7 +1,6 @@
 package com.tryCloud.pages;
 
 import com.tryCloud.utilities.Driver;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -15,18 +14,6 @@ public class DashboardPage {
 
     @FindBy(xpath = "//*[@id='appmenu']/li[@tabindex='-1']/a")
     public List<WebElement> modules;
-
-
-    public WebElement getModuleXpath(String moduleName) {
-        String xpath = "";
-        for (int i = 1; i < modules.size(); i++) {
-            if (modules.get(i).getAttribute("aria-label").equalsIgnoreCase(moduleName)) {
-                xpath = "//*[@id='appmenu']/li[" + i + "]";
-            }
-        }
-        return Driver.getDriver().findElement(By.xpath(xpath));
-    }
-
 
     @FindBy(xpath = "//*[@id='appmenu']/li[1]")
     public WebElement dashboardModule;
@@ -51,6 +38,7 @@ public class DashboardPage {
 
     @FindBy(xpath = "//*[@id='appmenu']/li[8]")
     public WebElement circlesModule;
+
     @FindBy(xpath = "//*[@id='expand']/div[1]/img")
     public WebElement userImage;
 
@@ -69,19 +57,8 @@ public class DashboardPage {
     @FindBy(xpath = "//*[@id=\"app-dashboard\"]/h2")
     public WebElement greetingMessageOnTop;
 
-
-    //*[@id="status-status"]/li/div/button/span
-
-    @FindBy(xpath = "//*[@id=\"body-user\"]/div[6]/div[2]/div/div")
-    public WebElement setStatusPage;
-
-//    @FindBy(xpath = "//div[@class='set-status-modal__online-status']//input")
-//    public List<WebElement> statusOptions;
-
-    @FindBy(xpath = "//*[@id=\"body-user\"]/div[6]/div[2]/div/div/div[2]/div/label")
+    @FindBy(xpath = "//*[@id=\"body-user\"]/div[6]/div[2]/div/div/div[2]/div")
     public List<WebElement> statusOptions;
-
-    //*[@id="body-user"]/div[6]/div[2]/div/div/div[2]/div/label
 
     @FindBy(xpath = "//input[@id='user-status-online-status-online']")
     public WebElement onlineStatus;
@@ -127,3 +104,4 @@ public class DashboardPage {
 
 
 }
+

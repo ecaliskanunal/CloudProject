@@ -2,9 +2,9 @@ package com.tryCloud.stepDefinitions;
 
 import com.tryCloud.pages.DashboardPage;
 import com.tryCloud.pages.LoginPage;
+import com.tryCloud.utilities.BrowserUtils;
 import com.tryCloud.utilities.ConfigurationReader;
 import com.tryCloud.utilities.Driver;
-import com.tryCloud.utilities.Utils;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -44,8 +44,6 @@ public class DashboardStepDefinitions {
             actualModuleLabel = module.getAttribute("aria-label");
             if (string.equals(actualModuleLabel)) {
                 actions.moveToElement(module).perform();
-                System.out.println("hover over actual module label: " + actualModuleLabel);
-                System.out.println("dashboardPage.getModuleXpath(string).getText() = " + dashboardPage.getModuleXpath(string).getText());
                 break;
             }
         }
@@ -58,9 +56,8 @@ public class DashboardStepDefinitions {
         for (WebElement module : dashboardPage.modules) {
             actualModuleLabel = module.getText();
             if (actualModuleLabel.equals(string)) {
-
+                wait.until(ExpectedConditions.elementToBeClickable(module));
                 Assert.assertTrue(module.isDisplayed());
-                System.out.println("see the selected module label: " + actualModuleLabel);
                 break;
             }
         }
@@ -73,9 +70,8 @@ public class DashboardStepDefinitions {
         for (WebElement module : dashboardPage.modules) {
             actualModuleLabel = module.getText();
             if (actualModuleLabel.equals(string)) {
-                //wait.until(ExpectedConditions.elementToBeClickable(module));
+                wait.until(ExpectedConditions.elementToBeClickable(module));
                 actions.click(module).perform();
-                System.out.println("clicked module: " + actualModuleLabel);
                 break;
             }
         }
@@ -90,7 +86,6 @@ public class DashboardStepDefinitions {
             if (actualModuleLabel.equalsIgnoreCase(string)) {
                 wait.until(ExpectedConditions.titleContains(string));
                 Assert.assertTrue(Driver.getDriver().getCurrentUrl().contains(string));
-                System.out.println("right page: " + Driver.getDriver().getCurrentUrl());
                 break;
             }
         }
@@ -135,14 +130,14 @@ public class DashboardStepDefinitions {
         for (int i = 0; i < dashboardPage.widgets.size(); i++) {
             actualWidgets.add(dashboardPage.widgets.get(i).getText());
         }
-        Assert.assertEquals(widgetsListFromFeature, actualWidgets);
+        Assert.assertTrue(widgetsListFromFeature.containsAll(actualWidgets));
     }
 
     @When("user clicks on all widgets")
     public void user_clicks_on_all_widgets() {
         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div//li/input/following-sibling::label")));
         for (int i = 0; i < dashboardPage.widgets.size(); i++) {
-            Utils.selectCheckBox(dashboardPage.widgets.get(i), true);
+            BrowserUtils.selectCheckBox(dashboardPage.widgets.get(i), true);
         }
     }
 
@@ -164,7 +159,7 @@ public class DashboardStepDefinitions {
     public void user_clicks_on_all_widgets_to_deselect() {
         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div//li/input/following-sibling::label")));
         for (int i = 0; i < dashboardPage.widgets.size(); i++) {
-            Utils.selectCheckBox(dashboardPage.widgets.get(i), true);
+            BrowserUtils.selectCheckBox(dashboardPage.widgets.get(i), true);
         }
     }
 
@@ -181,12 +176,10 @@ public class DashboardStepDefinitions {
         }
     }
 
-
     @When("user scrolls down on customize page")
     public void user_scrolls_down_on_customize_page() {
         jse.executeScript("window.scrollBy(0,document.body.scrollHeight)");
         jse.executeScript("arguments[0].scrollIntoView(true);", dashboardPage.lastImage);
-
     }
 
     @Then("user should be able to see background images")
@@ -202,33 +195,33 @@ public class DashboardStepDefinitions {
         }
     }
 
-    @Then("user should be able to select any background image {int}")
-    public void user_should_be_able_to_select_any_background_image(Integer int1) {
+    @Then("user should be able to select any background image")
+    public void user_should_be_able_to_select_any_background_image(List<Integer> numbersFromFeature) {
         for (int i = 1; i <= dashboardPage.images.size(); i++) {
-            if (i == int1) {
-                dashboardPage.images.get(i).click();
-                wait.until(ExpectedConditions.attributeContains(dashboardPage.images.get(i), "class", "background active"));
-                String classAttValueOfSelectedImage = dashboardPage.images.get(i).getAttribute("class");
-                String expectedAttValueOfSelectedImage = "background active";
-                System.out.println("classAttValueOfSelectedImage = " + classAttValueOfSelectedImage);
-                System.out.println("expectedAttValueOfSelectedImage = " + expectedAttValueOfSelectedImage);
-                Assert.assertEquals(classAttValueOfSelectedImage, expectedAttValueOfSelectedImage);
-                break;
+            for (Integer integer : numbersFromFeature) {
+                if (integer == i) {
+                    dashboardPage.images.get(i).click();
+                    wait.until(ExpectedConditions.attributeContains(dashboardPage.images.get(i), "class", "background active"));
+                    String classAttValueOfSelectedImage = dashboardPage.images.get(i).getAttribute("class");
+                    String expectedAttValueOfSelectedImage = "background active";
+                    Assert.assertEquals(classAttValueOfSelectedImage, expectedAttValueOfSelectedImage);
+                    if (!classAttValueOfSelectedImage.equals(expectedAttValueOfSelectedImage)) {
+                        Assert.assertFalse(classAttValueOfSelectedImage.equals(expectedAttValueOfSelectedImage));
+                    }
+                }
             }
         }
     }
-
 
     @When("user clicks on set status button on dashboard")
     public void user_clicks_on_set_status_button_on_dashboard() {
         dashboardPage.statusButtonOnDashboard.click();
     }
 
-
     @When("user clicks on a status {string}")
     public void user_clicks_on_a_status(String string) {
         for (WebElement status : dashboardPage.statusOptions) {
-            if (status.getText().equals(string)) {
+            if (status.getText().contains(string)) {
                 status.click();
             }
         }
@@ -236,48 +229,48 @@ public class DashboardStepDefinitions {
 
     @When("user clicks on set status message button")
     public void user_clicks_on_set_status_message_button() {
-        jse.executeScript("window.scrollBy(0,document.body.scrollHeight)");
-        wait.until(ExpectedConditions.elementToBeClickable(dashboardPage.setStatusButton));
-        dashboardPage.setStatusButton.click();
+        actions.click(dashboardPage.setStatusButton).perform();
+        Driver.getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
-    @Then("user should be able to see the selected message on dashboard {string}")
-    public void user_should_be_able_to_see_the_selected_message_on_dashboard(String string) {
-        //wait.until(ExpectedConditions.urlContains("dashboard"));
-        jse.executeScript("window.scrollTo(0, -document.body.scrollHeight);");
-        jse.executeScript("arguments[0].scrollIntoView(true);", dashboardPage.statusButtonOnDashboard);
-        wait.until(ExpectedConditions.elementToBeClickable(dashboardPage.statusButtonOnDashboard));
-        Assert.assertTrue(dashboardPage.statusButtonOnDashboard.getText().equals(string));
+    @Then("user should be able to see the selected status message on dashboard {string}")
+    public void user_should_be_able_to_see_the_selected_status_message_on_dashboard(String string) {
+        dashboardPage.clearStatusButton.click();
+        wait.until(ExpectedConditions.textToBePresentInElement(dashboardPage.statusButtonOnDashboard, string));
+        Assert.assertTrue(dashboardPage.statusButtonOnDashboard.getText().contains(string));
     }
-
-
 
     @When("user chooses a status message {string}")
     public void user_chooses_a_status_message(String string) {
         for (WebElement status : dashboardPage.statusMessageList) {
-            System.out.println("status message= " + status.getText());
             if (status.getText().equals(string)) {
-                System.out.println("status message clicked = " + status);
                 status.click();
             }
         }
     }
-    @When("user scrolls down on status page")
-    public void user_scrolls_down_on_status_page() {
-        jse.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-        jse.executeScript("arguments[0].scrollIntoView(true);", dashboardPage.setStatusButton);
-        System.out.println(" scrolled");
-    }
+
     @Then("Then user should be able to see the selected message on dashboard {string}")
     public void then_user_should_be_able_to_see_the_selected_message_on_dashboard(String string) {
-
-        jse.executeScript("arguments[0].scrollIntoView(true);", dashboardPage.greetingMessageOnTop);
-        jse.executeScript("window.scrollTo(0, -document.body.scrollHeight);");
-        //wait.until(ExpectedConditions.textToBePresentInElement(dashboardPage.statusButtonOnDashboard, "string"));
-        Driver.getDriver().manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
-        System.out.println(dashboardPage.statusButtonOnDashboard.getText());
+        wait.until(ExpectedConditions.textToBePresentInElement(dashboardPage.statusButtonOnDashboard, string));
         Assert.assertTrue(dashboardPage.statusButtonOnDashboard.getText().contains(string));
-        System.out.println("asserted" );
     }
 
+    @When("user clicks on clear status button")
+    public void user_clicks_on_clear_status_button() {
+        dashboardPage.clearStatusButton.click();
+    }
+
+    @Then("user should be able to see status message cleared from dashboard")
+    public void user_should_be_able_to_see_status_message_cleared_from_dashboard(List<String> messagesFromFeature) {
+        jse.executeScript("arguments[0].scrollIntoView(true);", dashboardPage.greetingMessageOnTop);
+        jse.executeScript("window.scrollTo(0, -document.body.scrollHeight);");
+        Driver.getDriver().manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
+        for (String message : messagesFromFeature) {
+            Assert.assertFalse(dashboardPage.statusButtonOnDashboard.getText().contains(message));
+            if (dashboardPage.statusButtonOnDashboard.getText().contains(message)) {
+                Assert.assertTrue(dashboardPage.statusButtonOnDashboard.getText().contains(message));
+                break;
+            }
+        }
+    }
 }

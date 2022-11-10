@@ -1,4 +1,4 @@
-@smoke
+@smok
 Feature: Dashboard functionality
   User Story: As a user I should be able to modify Dashboard page
 
@@ -106,41 +106,46 @@ Feature: Dashboard functionality
   Scenario: user can select any background image
     When user clicks on customize button
     And user scrolls down on customize page
-    Then user should be able to select any background image 5
+    Then user should be able to select any background image
+      | 3  |
+      | 5  |
+      | 7  |
+      | 13 |
+      | 11 |
 
 
   Scenario Outline: user can select status options
     When user clicks on set status button on dashboard
     And user clicks on a status "<status>"
     And user clicks on set status message button
-    Then user should be able to see the selected message on dashboard "<status>"
+    Then user should be able to see the selected status message on dashboard "<status>"
     Examples:
       | status         |
-      | Online         |
       | Away           |
       | Do not disturb |
       | Invisible      |
 
-  @wip
+
   Scenario Outline: user can select any status message
     When user clicks on set status button on dashboard
     And user chooses a status message "<status message>"
-    And user scrolls down on status page
     And user clicks on set status message button
     Then Then user should be able to see the selected message on dashboard "<status message>"
     Examples:
       | status message   |
       | In a meeting     |
       | Working remotely |
-#      | Commuting        |
-#      | Out sick         |
-#      | Vacationing      |
+      | Commuting        |
+      | Out sick         |
+      | Vacationing      |
+
 
   Scenario: user can clear status messages
     When user clicks on set status button on dashboard
-#    And user clicks on clear status button
-
-  Scenario: user can set status messages
-
-
-  fter these steps user can see his/her selections on dashboard
+    And user clicks on clear status button
+    Then user should be able to see status message cleared from dashboard
+      | In a meeting     |
+      | Working remotely |
+      | Commuting        |
+      | Out sick         |
+      | Vacationing      |
