@@ -1,6 +1,7 @@
 package com.tryCloud.stepDefinitions;
 
 import com.tryCloud.pages.LoginPage;
+import com.tryCloud.utilities.BrowserUtils;
 import com.tryCloud.utilities.ConfigurationReader;
 import com.tryCloud.utilities.Driver;
 import io.cucumber.java.en.And;
@@ -27,32 +28,38 @@ public class LoginStepDefinitions {
 
     @When("user types username {string}")
     public void user_types_username(String string) {
+        BrowserUtils.sleep(1);
         loginPage.usernameInputBox.sendKeys(ConfigurationReader.getProperty("username"));
     }
 
     @When("user types password {string}")
     public void user_types_password(String string) {
+        BrowserUtils.sleep(1);
         loginPage.passwordInputBox.sendKeys(ConfigurationReader.getProperty("password"));
     }
 
 
     @When("user enters invalid username {string}")
     public void userEntersInvalidUsername(String username) {
+        BrowserUtils.sleep(1);
         loginPage.usernameInputBox.sendKeys(username);
     }
 
     @And("user enters invalid password {string}")
     public void userEntersInvalidPassword(String password) {
+        BrowserUtils.sleep(1);
         loginPage.passwordInputBox.sendKeys(password);
     }
 
     @When("user enters missing credentials username {string}")
     public void userEntersMissingCredentialsUsername(String username) {
+        BrowserUtils.sleep(1);
         loginPage.usernameInputBox.sendKeys(username);
     }
 
     @And("user enters missing credentials password {string}")
     public void userEntersMissingCredentialsPassword(String password) {
+        BrowserUtils.sleep(1);
         loginPage.passwordInputBox.sendKeys(password);
     }
 
@@ -63,6 +70,7 @@ public class LoginStepDefinitions {
 
     @When("user hits enter key")
     public void user_hits_enter_key() {
+        BrowserUtils.sleep(1);
         actions.click(loginPage.loginButton).sendKeys(Keys.ENTER).perform();
     }
 
@@ -74,11 +82,13 @@ public class LoginStepDefinitions {
 
     @Then("user cannot login")
     public void userCannotLogin() {
+        BrowserUtils.sleep(1);
         Assert.assertTrue(Driver.getDriver().getCurrentUrl().contains("login"));
     }
 
     @Then("user sees validation message {string}")
     public void user_sees_validation_message(String string) {
+        BrowserUtils.sleep(1);
         if (loginPage.usernameInputBox==null){
             String validationMessage = loginPage.usernameInputBox.getAttribute("validationMessage");
             Assert.assertEquals(validationMessage, string);
@@ -92,20 +102,9 @@ public class LoginStepDefinitions {
     @Then("user sees error message {string}")
     public void user_sees_error_message(String string) {
         wait.until(ExpectedConditions.visibilityOf(loginPage.errorMessage));
-
         Assert.assertTrue(loginPage.errorMessage.isDisplayed());
-        //Assert.assertEquals(string, loginPage.errorMessage.getText());
     }
 
-//    @Then("user sees reminder message {string}")
-//    public void user_sees_reminder_message(String expectedReminderMessage) {
-//        //wait.until(ExpectedConditions.visibilityOf(loginPage.reminderMessage));
-//        //wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(),'Please fill out this field.')]")));
-//
-//        JavascriptExecutor jse = ((JavascriptExecutor) Driver.getDriver());
-//        jse.executeScript("arguments[0].scrollIntoView();", loginPage.reminderMessage);
-//        Assert.assertEquals(expectedReminderMessage, loginPage.reminderMessage.getText());
-//    }
 
     @When("user sees password {string} hidden")
     public void user_sees_password_hidden(String string) {
@@ -139,7 +138,6 @@ public class LoginStepDefinitions {
 
     @And("user types username {string} in reset password link")
     public void userTypesUsernameInResetPasswordLink(String string) {
-        // wait.until(ExpectedConditions.visibilityOf(loginPage.resetInputBox));
         wait.until(ExpectedConditions.elementToBeClickable(loginPage.resetInputBox));
         actions.click(loginPage.resetInputBox).sendKeys(string).perform();
     }
