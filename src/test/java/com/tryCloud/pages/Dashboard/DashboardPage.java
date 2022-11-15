@@ -104,7 +104,7 @@ public class DashboardPage {
 
     @FindBy(xpath = "//*[@id=\"body-user\"]/div[6]/div[2]/div/div/div/button[18]")
     public WebElement lastBackgroundImage;
-    
+
     @FindBy (xpath = "//input[@class=\"action-input__input focusable\"]")
     public WebElement locationInputBox;
 
