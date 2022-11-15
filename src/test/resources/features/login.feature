@@ -1,4 +1,4 @@
-@smoke @CLOUD-1191
+@smoke @login @CLOUD-1191
 Feature: Login functionality
   User Story: As a user, I should be able to login so that I can land on the dashboard page.
 
@@ -18,17 +18,17 @@ Feature: Login functionality
 
   @CLOUD-1180
   Scenario: login with valid credentials after a click on the login button
-    When user types username "username"
-    And user types password "password"
+    When user types username
+    And user types password
     And user clicks on login button
-    Then user can login
+    Then user can login successfully and land on dashboard
 
   @CLOUD-1181
   Scenario: login with valid credentials after hitting on the enter key
-    When user types username "username"
-    And user types password "password"
+    When user types username
+    And user types password
     And user hits enter key
-    Then user can login
+    Then user can login successfully and land on dashboard
 
   @CLOUD-1182
   Scenario Outline: login with invalid credentials
@@ -63,16 +63,16 @@ Feature: Login functionality
 
   @CLOUD-1184
   Scenario: password is typed hidden
-    When user types username "username"
-    And user types password "password"
-    And user sees password "password" hidden
+    When user types username
+    And user types password
+    And user sees password hidden
 
   @CLOUD-1185
   Scenario: password can be made visible
-    When user types username "username"
-    And user types password "password"
+    When user types username
+    And user types password
     And user toggles visibility
-    Then user sees password "password" visible
+    Then user sees password visible
 
   @CLOUD-1186
   Scenario: forgot password link is visible and clickable
@@ -83,7 +83,7 @@ Feature: Login functionality
   Scenario: reset password link is visible and clickable
     When user sees forgot password link
     And user clicks forgot password link
-    And user types username "username" in reset password link
+    And user types username in reset password link
     Then user clicks reset password
 
   @CLOUD-1188
@@ -96,8 +96,8 @@ Feature: Login functionality
 
   @CLOUD-1190
   Scenario: user refreshes and is still logged in
-    When user types username "username"
-    And user types password "password"
+    When user types username
+    And user types password
     And user clicks on login button
     And user refreshes the page
     Then user is still logged in

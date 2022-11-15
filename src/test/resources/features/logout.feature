@@ -1,4 +1,4 @@
-@smoke @CLOUD-1383
+@smoke @logout @CLOUD-1383
 Feature: Logout functionality
 
   User Story: As a user, I should be able to log out.

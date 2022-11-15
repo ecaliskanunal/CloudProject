@@ -1,7 +1,6 @@
 package com.tryCloud.stepDefinitions;
 
 import com.tryCloud.pages.LoginPage;
-import com.tryCloud.utilities.BrowserUtils;
 import com.tryCloud.utilities.ConfigurationReader;
 import com.tryCloud.utilities.Driver;
 import io.cucumber.java.en.And;
@@ -26,40 +25,34 @@ public class LoginStepDefinitions {
         Driver.getDriver().get(ConfigurationReader.getProperty("url"));
     }
 
-    @When("user types username {string}")
-    public void user_types_username(String string) {
-        BrowserUtils.sleep(1);
+    @When("user types username")
+    public void user_types_username() {
         loginPage.usernameInputBox.sendKeys(ConfigurationReader.getProperty("username"));
     }
 
-    @When("user types password {string}")
-    public void user_types_password(String string) {
-        BrowserUtils.sleep(1);
+    @When("user types password")
+    public void user_types_password() {
         loginPage.passwordInputBox.sendKeys(ConfigurationReader.getProperty("password"));
     }
 
 
     @When("user enters invalid username {string}")
     public void userEntersInvalidUsername(String username) {
-        BrowserUtils.sleep(1);
         loginPage.usernameInputBox.sendKeys(username);
     }
 
     @And("user enters invalid password {string}")
     public void userEntersInvalidPassword(String password) {
-        BrowserUtils.sleep(1);
         loginPage.passwordInputBox.sendKeys(password);
     }
 
     @When("user enters missing credentials username {string}")
     public void userEntersMissingCredentialsUsername(String username) {
-        BrowserUtils.sleep(1);
         loginPage.usernameInputBox.sendKeys(username);
     }
 
     @And("user enters missing credentials password {string}")
     public void userEntersMissingCredentialsPassword(String password) {
-        BrowserUtils.sleep(1);
         loginPage.passwordInputBox.sendKeys(password);
     }
 
@@ -70,25 +63,22 @@ public class LoginStepDefinitions {
 
     @When("user hits enter key")
     public void user_hits_enter_key() {
-        BrowserUtils.sleep(1);
         actions.click(loginPage.loginButton).sendKeys(Keys.ENTER).perform();
     }
 
-    @Then("user can login")
-    public void userCanLogin() {
+    @Then("user can login successfully and land on dashboard")
+    public void userCanLoginSuccessfullyAndLandOnDashboard() {
         wait.until(ExpectedConditions.visibilityOf(loginPage.userImage));
         Assert.assertTrue(Driver.getDriver().getCurrentUrl().contains("dashboard"));
     }
 
     @Then("user cannot login")
     public void userCannotLogin() {
-        BrowserUtils.sleep(1);
         Assert.assertTrue(Driver.getDriver().getCurrentUrl().contains("login"));
     }
 
     @Then("user sees validation message {string}")
     public void user_sees_validation_message(String string) {
-        BrowserUtils.sleep(1);
         if (loginPage.usernameInputBox==null){
             String validationMessage = loginPage.usernameInputBox.getAttribute("validationMessage");
             Assert.assertEquals(validationMessage, string);
@@ -100,14 +90,14 @@ public class LoginStepDefinitions {
     }
 
     @Then("user sees error message {string}")
-    public void user_sees_error_message(String string) {
+    public void user_sees_error_message() {
         wait.until(ExpectedConditions.visibilityOf(loginPage.errorMessage));
         Assert.assertTrue(loginPage.errorMessage.isDisplayed());
     }
 
 
-    @When("user sees password {string} hidden")
-    public void user_sees_password_hidden(String string) {
+    @When("user sees password hidden")
+    public void user_sees_password_hidden() {
         String expectedValueInTypeAttribute = "password";
         String actualValueInTypeAttribute = loginPage.passwordInputBox.getAttribute("type");
         Assert.assertEquals(expectedValueInTypeAttribute, actualValueInTypeAttribute);
@@ -118,8 +108,8 @@ public class LoginStepDefinitions {
         loginPage.togglePasswordButton.click();
     }
 
-    @Then("user sees password {string} visible")
-    public void user_sees_password_visible(String string) {
+    @Then("user sees password visible")
+    public void user_sees_password_visible() {
         String expectedValueInTypeAttribute = "text";
         String actualValueInTypeAttribute = loginPage.passwordInputBox.getAttribute("type");
         Assert.assertEquals(expectedValueInTypeAttribute, actualValueInTypeAttribute);
@@ -136,10 +126,10 @@ public class LoginStepDefinitions {
     }
 
 
-    @And("user types username {string} in reset password link")
-    public void userTypesUsernameInResetPasswordLink(String string) {
+    @And("user types username in reset password link")
+    public void userTypesUsernameInResetPasswordLink() {
         wait.until(ExpectedConditions.elementToBeClickable(loginPage.resetInputBox));
-        actions.click(loginPage.resetInputBox).sendKeys(string).perform();
+        actions.click(loginPage.resetInputBox).sendKeys(ConfigurationReader.getProperty("username")).perform();
     }
 
     @Then("user clicks reset password")
@@ -171,6 +161,7 @@ public class LoginStepDefinitions {
         wait.until(ExpectedConditions.visibilityOf(loginPage.userImage));
         Assert.assertTrue(Driver.getDriver().getCurrentUrl().contains("dashboard"));
     }
+
 
 
 }
