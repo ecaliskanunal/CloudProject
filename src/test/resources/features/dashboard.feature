@@ -1,4 +1,4 @@
-@smoke
+@smoke @CLOUD-1522
 Feature: Dashboard functionality
   User Story: As a user I should be able to modify Dashboard page
 
