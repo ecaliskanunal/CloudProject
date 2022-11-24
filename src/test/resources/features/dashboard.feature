@@ -1,24 +1,24 @@
 @smoke @CLOUD-1522
 Feature: Dashboard functionality
-  User Story: As a user I should be able to modify Dashboard page
+  User Story: As a user, I should be able to modify Dashboard page.
 
   Acceptance Criteria
   1. After Login user can see all modules and Username.
   2. User can click on Customize button
-     User can see status widgets and select any of them.
-     User can see background images and select any of them.
+  User can see status widgets and select any of them.
+  User can see background images and select any of them.
   3. User can click on Set Status button
-     User sees Online status options and select any of them
-     User sees Status messages and select any of them
-     User can Set or Clear status messages
-     After these steps user can see his/her selections on dashboard
+  User sees Online status options and select any of them
+  User sees Status messages and select any of them
+  User can Set or Clear status messages
+  After these steps user can see his/her selections on dashboard
   4. User can set the location for weather by typing the place
-     After his selection, user can see his selection on the dashboard
+  After his selection, user can see his selection on the dashboard
 
   Background:
     Given user is logged in
 
-    @CLOUD-1509
+  @CLOUD-1509
   Scenario Outline: user can see all the modules after hovering over them
     When user hovers over a "<module>" button on top left
     Then user should be able to see the "<module>" name highlighted
@@ -84,8 +84,9 @@ Feature: Dashboard functionality
   @CLOUD-1514
   Scenario: user can select all status widgets on customize page
     When user clicks on customize button
-    And user clicks on all widgets one by one
+    And user clicks on all widgets one by one to select
     Then user should be able to see all widgets selected
+
 
   @CLOUD-1515
   Scenario: user can deselect all status widgets on customize page
@@ -108,7 +109,7 @@ Feature: Dashboard functionality
       | 5  |
       | 7  |
       | 13 |
-      | 11 |
+      | 91 |
 
   @CLOUD-1518
   Scenario Outline: user can select status options
@@ -148,13 +149,13 @@ Feature: Dashboard functionality
       | Vacationing      |
 
   @CLOUD-1521
-    Scenario Outline: user can set the location for weather by typing the place
-      When user clicks on weather widget on dashboard
-      And user clicks on address box
-      And user types a "<place>" in address box
-      Then user should be able to see the weather for the "<place>" typed on dashboard
+  Scenario Outline: user can set the location for weather by typing the place
+    When user clicks on weather widget on dashboard
+    And user clicks on address box
+    And user types a "<place>" in address box
+    Then user should be able to see the weather for the "<place>" typed on dashboard
 
-      Examples:
-      |place|
-      |Ankara|
-      |Boston|
+    Examples:
+      | place  |
+      | Ankara |
+      | Boston |
