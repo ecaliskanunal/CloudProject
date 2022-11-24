@@ -47,7 +47,6 @@ public class DashboardStepDefinitions {
         //        break;
         //    }
         // }
-
     }
 
     @Then("user should be able to see the {string} name highlighted")
